@@ -1,0 +1,314 @@
+/*
+ * Core Styles for mikebenowitz.com
+ * done by Mike Benowitz
+*/
+
+/* Main Site style variables */
+$navbar-logo-font: Bevan;
+$general-font-stack: Lato, Helvetica, sans-serif;
+$body-header-font: 'EB Garamond', 'Times New Roman', serif;
+$bg-color: #fff;
+$high-color: #000;
+$header-color: #000;
+$body-color: #000;
+
+/* General Styles */
+
+h1, h2, h3, h4, h5, h6, label{
+    font-family: $body-header-font !important;
+    color: $header-color !important;
+}
+
+p, li, ol, ul, td, th   {
+    font-family: $general-font-stack;
+    color: $body-color;
+}
+
+
+
+.container {
+    margin-top: 75px;
+    width: 90% !important;
+}
+
+@media(min-width: 992px){
+    .container{
+        width: 80% !important;
+    }
+}
+
+.btn-primary{
+    color: #000 !important;
+    background-color: #fff !important;
+    border: 1px solid #000 !important;
+    &:hover{
+        background-color: #e9e9e9 !important;
+    }
+}
+
+.btn-sm{
+    font-size: 0.75rem !important;
+    padding: 0.05rem 0.5rem !important;
+}
+
+.active{
+    color: #fff !important;
+    background-color: #000 !important;
+    &:hover{
+        background-color: #000 !important;
+    }
+}
+
+.p-2 h6{
+    margin-bottom: 0;
+    position: relative;
+    top: 5px;
+}
+
+.p-2 h4{
+    margin-bottom: 0;
+    position: relative;
+    top: 20px;
+}
+
+input.form-control{
+    border: 1px solid #000;
+    &:focus{
+        border-color: #e9e9e9;
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+    }
+}
+
+.affix{
+    position: fixed;
+    top: 0;
+}
+
+.loadOverlay{
+    position: fixed;
+    top: 0px;
+    padding-top: 200px;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    background-color: #e9e9e9;
+    opacity: 0.75;
+    text-align: center;
+}
+
+.hidden{
+    display: none;
+}
+
+/* Navbar */
+
+.navbar{
+    background-color: $bg-color;
+    padding: 0.1rem 1.0rem !important;
+    border-bottom: 3px solid #000;
+}
+
+.navbar-nav{
+    background-color: $bg-color;
+}
+
+.navbar-brand a{
+    color: #000;
+    font-family: $body-header-font;
+    &:hover{
+        color: $high-color;
+        text-decoration: none;
+    }
+}
+
+.nav-item a{
+    color: #000 !important;
+    font-family: $navbar-logo-font;
+    &:hover {
+        text-decoration: none;
+        color: $high-color !important;
+    }
+}
+.navbar-toggler{
+    padding: 0.1rem 0.5rem 0.2rem !important;
+    .navbar-toggler-icon{
+        height: 1em;
+        width: 1em
+    }
+}
+
+.nav-link .fa{
+    font-size: 20px;
+}
+
+
+
+/* Homepage Styles */
+
+.homeHeader{
+    margin-bottom: 0;
+}
+
+.homeHeader small{
+    font-size: 50%;
+}
+
+.homeSubHeader{
+    color: #666 !important;
+}
+
+.homeSubHeader a.nav-link{
+    color: #666;
+    display: inline-block;
+    &:hover{
+        text-decoration: underline;
+        color: #666;
+    }
+}
+
+.article-card{
+    height: 175px;
+    margin: 15px 0;
+    padding: 10px;
+    border: 1px solid #000 !important;
+    overflow-y: hidden;
+    &:hover{
+        width: 120%;
+        position: absolute;
+        left: -10%;
+        height: 200px;
+        box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+        -webkit-box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+        z-index: 9999;
+    }
+}
+
+.card-block a{
+    color: #666;
+    &:hover{
+        color: #666;
+        text-decoration: underline;
+    }
+}
+
+.article-date{
+    margin-bottom: 0;
+    line-height: 1;
+}
+
+.article-score{
+    margin-bottom: 0;
+    line-height: 1;
+    position: relative;
+    top: -3px;
+}
+
+.date-section{
+    margin: 5px 0;
+}
+
+.source-button{
+    text-align: left;
+    padding: 5px 15px !important;
+    &:hover{
+        background-color: #e9e9e9;
+    }
+}
+
+.article-count{
+    float: right;
+    display: inline-block;
+}
+
+.active-source{
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.rdtOpen input, .rdt input {
+    padding: 0 0.75rem !important;
+}
+
+.rdtPicker td.rdtActive, .rdtPicker td.rdtActive:hover{
+    background-color: #000 !important;
+}
+
+.rdtPicker td.rdtToday:before{
+    border-bottom: 7px solid #000 !important;
+}
+
+.rdtPicker{
+    width: 100% !important;
+}
+
+.input-range{
+    height: inherit !important;
+}
+
+.input-range__track--active{
+    background-color: #000 !important;
+}
+
+.input-range__slider{
+    background-color: #000 !important;
+    border: 1px solid #000 !important;
+}
+
+.articleContainerLine{
+    margin-bottom: 0;
+    margin-top: 0.4rem;
+}
+
+.card-no-border{
+    border: none !important;
+}
+
+.stickyEl{
+    position: sticky;
+    top: 0px;
+    background-color: #fff;
+    z-index: 9999;
+}
+
+/* Selected Work Styles */
+.projectRow{
+    padding: 0.5em 0 1em 0;
+    h4{
+        border-bottom: 1px solid $body-color;
+    }
+
+}
+
+.imageCol img{
+    width: 100%;
+    border: 1px solid #e3e3e3;
+}
+
+.projectLink {
+    color: $bg-color;
+    :hover{
+        color: $high-color;
+    }
+}
+
+.listContainer h6{
+    margin-bottom: 0;
+}
+
+.projectList{
+    list-style-type: none;
+    padding-left: 0;
+}
+
+/* Contact Styles */
+
+.contactInfo{
+    a{
+        color: $bg-color;
+    }
+    a:hover{
+        color: $high-color;
+        text-decoration: none;
+    }
+}
