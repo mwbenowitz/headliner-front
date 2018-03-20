@@ -85,7 +85,9 @@ export default class Home extends React.Component{
 
     }
 
-    searchHeadlines(){
+    searchHeadlines(e){
+        e.preventDefault();
+        e.stopPropagation();
         this.setState({isLoading: true})
         Axios.get(apiVar.url, {
 			params: {"headline": this.state.searchTerm}
@@ -314,12 +316,14 @@ export default class Home extends React.Component{
                     </div>
                     <div className="flex-row d-flex justify-content-center text-center">
                         <div className="col-12 col-sm-6 col-sm-offset-3">
-                            <div className="form-group row">
-                                <input id="mainSearch" className="form-control" type="text" value={this.state.searchTerm} onChange={this.updateSearch} placeholder="Search Headlines (e.g. Trump or olympics)"/>
-                            </div>
-                            <div className="form-group row justify-content-center text-center">
-                                <button className="btn btn-primary" onClick={this.searchHeadlines} id="headlineButton">Search Headlines</button>
-                            </div>
+                            <form onSubmit={this.searchHeadlines}>
+                                <div className="form-group row">
+                                    <input id="mainSearch" className="form-control" type="text" value={this.state.searchTerm} onChange={this.updateSearch} placeholder="Search Headlines (e.g. Trump or olympics)"/>
+                                </div>
+                                <div className="form-group row justify-content-center text-center">
+                                    <button type="submit" className="btn btn-primary" id="headlineButton">Search Headlines</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
 
