@@ -30,7 +30,8 @@ export default class Home extends React.Component{
             sorts: [],
             activeSort: '',
             scrollWatcher: null,
-            isLoading: false
+            isLoading: false,
+            searchComplete: false
         }
         this.updateSearch = this.updateSearch.bind(this);
         this.searchHeadlines = this.searchHeadlines.bind(this);
@@ -94,7 +95,7 @@ export default class Home extends React.Component{
 		})
 			.then(response => {
                 this.parseArticles(response.data.articles);
-                this.setState({isLoading: false})
+                this.setState({isLoading: false, searchComplete: true})
 			})
 			.catch( error => {
 				console.log('API call failed', error);
@@ -326,7 +327,15 @@ export default class Home extends React.Component{
                             </form>
                         </div>
                     </div>
-
+                    {(this.state.searchComplete && this.state.articles.length == 0) ? (
+                        <div className="row">
+                            <div className="col-12 text-center">
+                                <h2>No Results Found</h2>
+                            </div>
+                        </div>
+                    ) : (
+                        null
+                    )}
                     <div className="row">
                         <div className="col-sm-12 col-md-4 col-lg-3" id="filterCol">
                             {this.state.articles.length ? (
