@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import Datetime from 'react-datetime';
 import moment from 'moment';
 import InputRange from 'react-input-range';
+import apiVar from './../config.json';
 
 var validDate = function(current){
     var startDate = moment('2018-02-23');
@@ -86,7 +87,7 @@ export default class Home extends React.Component{
 
     searchHeadlines(){
         this.setState({isLoading: true})
-        Axios.get('http://167.99.50.104:5000/articles', {
+        Axios.get(apiVar.url, {
 			params: {"headline": this.state.searchTerm}
 		})
 			.then(response => {
