@@ -86,7 +86,7 @@ export default class Home extends React.Component{
 
     searchHeadlines(){
         this.setState({isLoading: true})
-        Axios.get('http://localhost:5000/articles', {
+        Axios.get('http://167.99.50.104:5000/articles', {
 			params: {"headline": this.state.searchTerm}
 		})
 			.then(response => {
