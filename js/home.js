@@ -95,7 +95,7 @@ export default class Home extends React.Component{
     searchHeadlines(e){
         e.preventDefault();
         e.stopPropagation();
-        this.setState({isLoading: true})
+        this.setState({isLoading: true, displayCount: 24})
         Axios.get(apiVar.url, {
 			params: {"headline": this.state.searchTerm}
 		})
@@ -459,9 +459,9 @@ export default class Home extends React.Component{
                                     </div>
                                 )}
                             </div>
-                            <div className={"loadOverlay " + (this.state.loadingArticles ? '' : 'hidden')}>
+                            <div className="row">
                                 <div className="col-12 text-center">
-                                    <h6><i className="fa fa-circle-o-notch fa-5x fa-spin"></i> Loading Articles</h6>
+                                    <h6 className={(this.state.loadingArticles ? '' : 'hidden')}><i className="fa fa-circle-o-notch fa-spin"></i> Loading Articles</h6>
                                 </div>
                             </div>
                             <div className="row">
