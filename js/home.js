@@ -6,6 +6,7 @@ import Datetime from 'react-datetime';
 import moment from 'moment';
 import InputRange from 'react-input-range';
 import apiVar from './../config.json';
+import Waypoint from 'react-waypoint'
 
 var validDate = function(current){
     var startDate = moment('2018-02-23');
@@ -20,8 +21,11 @@ export default class Home extends React.Component{
             endDate: moment(),
             searchTerm: '',
             message: '',
+            total: 0,
+            displayCount: 24,
             articles: [],
             filteredArticles: [],
+            displayArticles: [],
             sources: [],
             filters: {"sources": []},
             activeSources: {},
@@ -31,7 +35,8 @@ export default class Home extends React.Component{
             activeSort: '',
             scrollWatcher: null,
             isLoading: false,
-            searchComplete: false
+            searchComplete: false,
+            loadingArticles: false
         }
         this.updateSearch = this.updateSearch.bind(this);
         this.searchHeadlines = this.searchHeadlines.bind(this);
@@ -43,6 +48,7 @@ export default class Home extends React.Component{
         this.setScoreFilter = this.setScoreFilter.bind(this);
         this.sortArticles = this.sortArticles.bind(this);
         this._sorter = this._sorter.bind(this);
+        this.loadMoreArticles = this.loadMoreArticles.bind(this);
     }
 
     updateSearch(event){
@@ -82,7 +88,7 @@ export default class Home extends React.Component{
         this.setState({activeSources: actSources});
         this.setState({sources: tmpSources});
         this.setState({articles: parsed});
-        this.setState({filteredArticles: parsed});
+        this.setState({filteredArticles: parsed, displayArticles: parsed.slice(0, this.state.displayCount)});
 
     }
 
@@ -95,7 +101,7 @@ export default class Home extends React.Component{
 		})
 			.then(response => {
                 this.parseArticles(response.data.articles);
-                this.setState({isLoading: false, searchComplete: true})
+                this.setState({isLoading: false, searchComplete: true, total: response.data.total})
 			})
 			.catch( error => {
 				console.log('API call failed', error);
@@ -159,7 +165,7 @@ export default class Home extends React.Component{
             this.setState({activeSources: replSources});
             var dateFiltered = this.filterByDates(rawArticles, this.state.startDate, this.state.endDate);
             var scoreFiltered = this.filterByScores(dateFiltered, this.state.filterScores);
-            this.setState({filteredArticles: scoreFiltered});
+            this.setState({filteredArticles: scoreFiltered, displayArticles: scoreFiltered.slice(0, this.state.displayCount)});
             return true;
         }
 
@@ -272,7 +278,7 @@ export default class Home extends React.Component{
             }
             articles.sort(this._sortProp(type[0], sortDir));
         }
-        this.setState({filteredArticles: articles})
+        this.setState({filteredArticles: articles, displayArticles: articles.slice(0, this.state.displayCount)})
     }
 
     _sortProp(type, sortDir){
@@ -291,6 +297,14 @@ export default class Home extends React.Component{
             console.log(a[type], aSort, b[type], bSort);
             return (aSort > bSort) ? sortDir : ((bSort > aSort) ? (sortDir * -1): 0);
         }
+    }
+
+    loadMoreArticles(){
+        console.log("Loading More Articles");
+        this.setState({loadingArticles: true})
+        var newDisplay = this.state.displayCount + 24;
+        var newArticles = this.state.filteredArticles.slice(0, newDisplay);
+        this.setState({displayCount: newDisplay, displayArticles: newArticles, loadingArticles: false});
     }
 
     render(){
@@ -340,7 +354,7 @@ export default class Home extends React.Component{
                         <div className="col-sm-12 col-md-4 col-lg-3" id="filterCol">
                             {this.state.articles.length ? (
                                 <div className="stickyEl">
-                                    <h2>Filter {this.state.articles.length} Results</h2>
+                                    <h2>Filter {this.state.total} Results</h2>
                                     <h4>Sources</h4>
                                     <div className="card">
                                         <ul className="list-group list-group-flush">
@@ -421,7 +435,7 @@ export default class Home extends React.Component{
                                 null
                             )}
                             <div className="row">
-                                {this.state.filteredArticles.map((article) =>
+                                {this.state.displayArticles.map((article) =>
                                     <div className="col-12 col-sm-6 col-md-6 col-lg-4" key={article.id}>
                                         <div className="card article-card">
                                             <div className="card-block">
@@ -444,6 +458,16 @@ export default class Home extends React.Component{
                                         </div>
                                     </div>
                                 )}
+                            </div>
+                            <div className={"loadOverlay " + (this.state.loadingArticles ? '' : 'hidden')}>
+                                <div className="col-12 text-center">
+                                    <h6><i className="fa fa-circle-o-notch fa-5x fa-spin"></i> Loading Articles</h6>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-12">
+                                    <Waypoint onEnter={this.loadMoreArticles} topOffset='50px'/>
+                                </div>
                             </div>
                         </div>
                     </div>
