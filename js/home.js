@@ -320,8 +320,7 @@ export default class Home extends React.Component{
                         <div className="col-12">
                             <h1 className="homeHeader">Headliner <small>BETA</small></h1>
                             <h6 className="homeSubHeader"><Link className="nav-link" to="/about">About</Link>|<Link className="nav-link" to="/contact">Contact</Link></h6>
-                            <h6>Search headlines from NYT, NPR, FOX, WAPO and CNN and see differences in language and placement</h6>
-                            <h6>(More to come, including: USA Today, LA Times, Chicago Trib, Houston Cron and WSJ)</h6>
+                            <h6>Search headlines from <Link to="/about">10 major news sources</Link>. Want to see another site here? <Link to="/contact">Let me know!</Link></h6>
                         </div>
                     </div>
                     <div className="flex-row d-flex justify-content-center text-center">

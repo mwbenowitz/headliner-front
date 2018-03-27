@@ -24,7 +24,12 @@ p, li, ol, ul, td, th   {
     color: $body-color;
 }
 
-
+a{
+    color: #666 !important;
+    &:hover{
+        text-decoration: underline;
+    }
+}
 
 .container {
     margin-top: 75px;
