@@ -72,13 +72,19 @@ module.exports = {
         historyApiFallback: true,
         noInfo: true
     },
-    devtool: '#eval-source-map',
+    devtool: 'source-map',
     plugins: [
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
             Popper: ['popper.js', 'default']
-        })
+        }),
+	new webpack.DefinePlugin({
+	    'process.env.NODE_ENV': JSON.stringify('production')
+	}),
+	new webpack.optimize.UglifyJsPlugin({
+	    sourceMap: true
+	})
     ]
 }
