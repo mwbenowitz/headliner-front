@@ -50,7 +50,7 @@ module.exports = {
                     name: 'fonts/[name].[ext]'
                 }
             },{
-                test: /\.(png|jpg|gif)$/,
+                test: /\.(png|jpg|gif|ico)$/,
                 use: [
                   {
                     loader: 'url-loader',
