@@ -6,6 +6,8 @@ import Datetime from 'react-datetime';
 import moment from 'moment';
 import InputRange from 'react-input-range';
 import apiVar from './../config.json';
+import Waypoint from 'react-waypoint'
+import ReactGA from 'react-ga';
 import Waypoint from 'react-waypoint';
 
 import Article from './article';
@@ -98,6 +100,11 @@ export default class Home extends React.Component{
     searchHeadlines(e){
         e.preventDefault();
         e.stopPropagation();
+	ReactGA.event({
+		category: 'Search',
+		action: 'Executed Primary Search',
+		label: this.state.searchTerm
+	});
         this.setState({isLoading: true, displayCount: 24})
         Axios.get(apiVar.url, {
 			params: {"headline": this.state.searchTerm}

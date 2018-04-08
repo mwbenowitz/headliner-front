@@ -1,3 +1,4 @@
 {
-    "url": "[working_headliner_api_endpoint]"
+    "url": "[working_headliner_api_endpoint]",
+    "gaID": "[Google_Analytics_ID]"
 }
