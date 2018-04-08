@@ -6,7 +6,9 @@ import Datetime from 'react-datetime';
 import moment from 'moment';
 import InputRange from 'react-input-range';
 import apiVar from './../config.json';
-import Waypoint from 'react-waypoint'
+import Waypoint from 'react-waypoint';
+
+import Article from './article';
 
 var validDate = function(current){
     var startDate = moment('2018-02-23');
@@ -22,7 +24,7 @@ export default class Home extends React.Component{
             searchTerm: '',
             message: '',
             total: 0,
-            displayCount: 24,
+            displayCount: 12,
             articles: [],
             filteredArticles: [],
             displayArticles: [],
@@ -62,18 +64,19 @@ export default class Home extends React.Component{
         var scoreRange = {"min": 1000, "max": 0}
         var dateOptions = {"weekday": "short", "year": "2-digit", "month": "2-digit", "day": "2-digit", "hour": "numeric", "minute": "numeric", "hour12": true}
         for(var source in sources){
-            for(var article in sources[source]){
-                var currentArt = sources[source][article];
+            var source_name = sources[source]['name'];
+            for(var i in sources[source]['articles']){
+                var currentArt = sources[source]['articles'][i];
                 var firstDate = new Date(currentArt['firstSeen']);
                 currentArt['firstSeen'] = firstDate.toLocaleDateString('en-US', dateOptions);
                 var lastDate = new Date(currentArt['lastSeen']);
                 currentArt['lastSeen'] = lastDate.toLocaleDateString('en-US', dateOptions);
-                currentArt["source"] = source;
+                currentArt["source"] = source_name;
                 parsed.push(currentArt);
-                if(source in tmpSources){
-                    tmpSources[source] += 1;
+                if(source_name in tmpSources){
+                    tmpSources[source_name] += 1;
                 } else {
-                    tmpSources[source] = 1;
+                    tmpSources[source_name] = 1;
                 }
                 if(currentArt['avgScore'] < scoreRange['min']){
                     scoreRange['min'] = Math.floor(currentArt['avgScore']);
@@ -82,7 +85,7 @@ export default class Home extends React.Component{
                     scoreRange['max'] = Math.ceil(currentArt['avgScore']);
                 }
             }
-            actSources[source] = false;
+            actSources[source_name] = false;
         }
         this.setState({scoreRange: scoreRange, filterScores: scoreRange})
         this.setState({activeSources: actSources});
@@ -300,9 +303,8 @@ export default class Home extends React.Component{
     }
 
     loadMoreArticles(){
-        console.log("Loading More Articles");
         this.setState({loadingArticles: true})
-        var newDisplay = this.state.displayCount + 24;
+        var newDisplay = this.state.displayCount + 12;
         var newArticles = this.state.filteredArticles.slice(0, newDisplay);
         this.setState({displayCount: newDisplay, displayArticles: newArticles, loadingArticles: false});
     }
@@ -435,27 +437,7 @@ export default class Home extends React.Component{
                             )}
                             <div className="row">
                                 {this.state.displayArticles.map((article) =>
-                                    <div className="col-12 col-sm-6 col-md-6 col-lg-4" key={article.id}>
-                                        <div className="card article-card">
-                                            <div className="card-block">
-                                                <div className="row">
-                                                    <div className="col-7">
-                                                        <h6 className="card-title">{article.source}</h6>
-                                                    </div>
-                                                    <div className="col-5 text-right">
-                                                        <p className="article-score"><small>Avg. Score<br/>{article.avgScore}</small></p>
-                                                    </div>
-                                                </div>
-                                                <a href={article.url} target="_blank">{article.headline}</a>
-                                                <div className="date-section">
-                                                    <p className="article-date"><small><strong>From</strong></small></p>
-                                                    <p className="article-date"><small>{article.firstSeen}</small></p>
-                                                    <p className="article-date"><small><strong>To</strong></small></p>
-                                                    <p className="article-date"><small>{article.lastSeen}</small></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <Article article={article} key={article.uuid}/>
                                 )}
                             </div>
                             <div className="row">
