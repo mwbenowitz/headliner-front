@@ -8,7 +8,6 @@ import InputRange from 'react-input-range';
 import apiVar from './../config.json';
 import Waypoint from 'react-waypoint'
 import ReactGA from 'react-ga';
-import Waypoint from 'react-waypoint';
 
 import Article from './article';
 
@@ -125,7 +124,6 @@ export default class Home extends React.Component{
     filterArticles(addFilter){
         var filters = this.state.filters;
         var actSources = this.state.activeSources;
-        console.log(addFilter);
         if(addFilter[0] == 'source'){
             if(filters["sources"].indexOf(addFilter[1]) > -1){
                 var removeFilter = filters["sources"].indexOf(addFilter[1]);
@@ -159,7 +157,6 @@ export default class Home extends React.Component{
                 this.execFilters(filters)
             });
         } else if(addFilter[0] == 'scores'){
-            console.log("hello?", filters);
             this.execFilters(filters);
         }
     }
@@ -240,7 +237,6 @@ export default class Home extends React.Component{
             var sortType = sort[1];
             var setSort = this.state.sorts;
             var changed = false;
-            console.log(setSort, setSort.length, sortName, sortType)
             if(setSort.length > 0){
                 for(var i = 0; i < setSort.length; i++){
                     if(setSort[i][0] == sortName){
@@ -277,7 +273,6 @@ export default class Home extends React.Component{
     }
 
     _sorter(){
-        console.log(this.state.sorts);
         var articles = this.state.filteredArticles;
         var sorts = this.state.sorts;
         for(var i = 0; i < sorts.length; i++){
@@ -304,7 +299,6 @@ export default class Home extends React.Component{
                 aSort = a[type];
                 bSort = b[type];
             }
-            console.log(a[type], aSort, b[type], bSort);
             return (aSort > bSort) ? sortDir : ((bSort > aSort) ? (sortDir * -1): 0);
         }
     }
