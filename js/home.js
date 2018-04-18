@@ -8,21 +8,15 @@ import InputRange from 'react-input-range';
 import apiVar from './../config.json';
 import Waypoint from 'react-waypoint'
 import ReactGA from 'react-ga';
-import Waypoint from 'react-waypoint';
 
 import Article from './article';
-
-var validDate = function(current){
-    var startDate = moment('2018-02-23');
-    return current.isAfter(startDate)
-}
 
 export default class Home extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            startDate: moment('2018-02-23'),
-            endDate: moment(),
+            startDate: moment(),
+            endDate: moment('2018-01-01'),
             searchTerm: '',
             message: '',
             total: 0,
@@ -53,10 +47,15 @@ export default class Home extends React.Component{
         this.sortArticles = this.sortArticles.bind(this);
         this._sorter = this._sorter.bind(this);
         this.loadMoreArticles = this.loadMoreArticles.bind(this);
+        this.validDate = this.validDate.bind(this);
     }
 
     updateSearch(event){
         this.setState({searchTerm: event.target.value});
+    }
+
+    validDate(current){
+        return ((current.isAfter(this.state.startDate) && current.isBefore(this.state.endDate)) || current.isSame(this.state.startDate, 'day'))
     }
 
     parseArticles(sources){
@@ -70,10 +69,17 @@ export default class Home extends React.Component{
             for(var i in sources[source]['articles']){
                 var currentArt = sources[source]['articles'][i];
                 var firstDate = new Date(currentArt['firstSeen']);
+                if(moment(firstDate).isBefore(this.state.startDate)){
+                    this.setState({startDate: moment(firstDate)});
+                }
                 currentArt['firstSeen'] = firstDate.toLocaleDateString('en-US', dateOptions);
                 var lastDate = new Date(currentArt['lastSeen']);
+                if(moment(lastDate).isAfter(this.state.endDate)){
+                    this.setState({endDate: moment(lastDate)})
+                }
                 currentArt['lastSeen'] = lastDate.toLocaleDateString('en-US', dateOptions);
                 currentArt["source"] = source_name;
+                currentArt["headline"] = currentArt["headlines"][0]["headline"];
                 parsed.push(currentArt);
                 if(source_name in tmpSources){
                     tmpSources[source_name] += 1;
@@ -94,7 +100,6 @@ export default class Home extends React.Component{
         this.setState({sources: tmpSources});
         this.setState({articles: parsed});
         this.setState({filteredArticles: parsed, displayArticles: parsed.slice(0, this.state.displayCount)});
-
     }
 
     searchHeadlines(e){
@@ -105,7 +110,7 @@ export default class Home extends React.Component{
 		action: 'Executed Primary Search',
 		label: this.state.searchTerm
 	});
-        this.setState({isLoading: true, displayCount: 24})
+        this.setState({isLoading: true, displayCount: 24, startDate: moment(), endDate: moment('2018-01-01')})
         Axios.get(apiVar.url, {
 			params: {"headline": this.state.searchTerm}
 		})
@@ -125,7 +130,6 @@ export default class Home extends React.Component{
     filterArticles(addFilter){
         var filters = this.state.filters;
         var actSources = this.state.activeSources;
-        console.log(addFilter);
         if(addFilter[0] == 'source'){
             if(filters["sources"].indexOf(addFilter[1]) > -1){
                 var removeFilter = filters["sources"].indexOf(addFilter[1]);
@@ -159,7 +163,6 @@ export default class Home extends React.Component{
                 this.execFilters(filters)
             });
         } else if(addFilter[0] == 'scores'){
-            console.log("hello?", filters);
             this.execFilters(filters);
         }
     }
@@ -240,7 +243,6 @@ export default class Home extends React.Component{
             var sortType = sort[1];
             var setSort = this.state.sorts;
             var changed = false;
-            console.log(setSort, setSort.length, sortName, sortType)
             if(setSort.length > 0){
                 for(var i = 0; i < setSort.length; i++){
                     if(setSort[i][0] == sortName){
@@ -277,7 +279,6 @@ export default class Home extends React.Component{
     }
 
     _sorter(){
-        console.log(this.state.sorts);
         var articles = this.state.filteredArticles;
         var sorts = this.state.sorts;
         for(var i = 0; i < sorts.length; i++){
@@ -304,7 +305,6 @@ export default class Home extends React.Component{
                 aSort = a[type];
                 bSort = b[type];
             }
-            console.log(a[type], aSort, b[type], bSort);
             return (aSort > bSort) ? sortDir : ((bSort > aSort) ? (sortDir * -1): 0);
         }
     }
@@ -375,9 +375,9 @@ export default class Home extends React.Component{
                                     <div className="card card-no-border">
                                         <div className="card-block">
                                             <h6>From</h6>
-                                            <Datetime isValidDate={validDate} onChange={this.setStartDate}/>
+                                            <Datetime isValidDate={this.validDate} onChange={this.setStartDate}/>
                                             <h6>To</h6>
-                                            <Datetime isValidDate={validDate} onChange={this.setEndDate}/>
+                                            <Datetime isValidDate={this.validDate} onChange={this.setEndDate}/>
                                         </div>
                                     </div>
                                     <h4>Scores</h4>
