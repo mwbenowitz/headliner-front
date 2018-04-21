@@ -341,7 +341,7 @@ export default class Home extends React.Component{
                         <div className="col-12 col-sm-6 col-sm-offset-3">
                             <form onSubmit={this.searchHeadlines}>
                                 <div className="form-group row">
-                                    <input id="mainSearch" className="form-control" type="text" value={this.state.searchTerm} onChange={this.updateSearch} placeholder="Search Headlines (e.g. Trump or olympics)"/>
+                                    <input id="mainSearch" className="form-control" type="text" value={this.state.searchTerm} onChange={this.updateSearch} placeholder="Search Headlines (try Beyoncé or collusion)"/>
                                 </div>
                                 <div className="form-group row justify-content-center text-center">
                                     <button type="submit" className="btn btn-primary" id="headlineButton">Search Headlines</button>
